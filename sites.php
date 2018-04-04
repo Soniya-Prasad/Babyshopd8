@@ -53,3 +53,4 @@
  * @see conf_path()
  * @see http://drupal.org/documentation/install/multi-site
  */
+echo "hello";
