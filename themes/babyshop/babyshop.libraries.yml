@@ -1,0 +1,44 @@
+global-styling:
+  css:
+    theme:
+      css/main.css: {}
+      css/style.css: {}
+
+  js:
+    js/jquery.main.js: {}
+    js/custom.js: {}
+
+your-style:
+  js:
+    //cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js: { type: external, minified: true }
+    js/itsyourstyle.js: {}
+  css:
+    theme:
+      https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css: { type: external, minified: true }
+      https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css: { type: external, minified: true }
+      https://fonts.googleapis.com/css?family=Lato:400,300,100,700,900 : { type: external, minified: true }
+      css/itsyourstyle.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
+
+panorama-style:
+  js:
+    vendor/es5-shim.js: {}
+    vendor/eventShim.js: {}
+    vendor/classList.js: {}
+    vendor/requestAnimationFrame.js: {}
+    vendor/screenfull.min.js: {}
+    vendor/bowser.min.js: {}
+    vendor/marzipano.js: {}
+    js/data.js: {}
+    js/DeviceOrientationControlMethod.js: {}
+    js/index.js: {}
+    js/panorama_page.js: {}
+  css:
+    theme:
+      css/panorama_custom.css: {}
+      css/panorama_page.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings

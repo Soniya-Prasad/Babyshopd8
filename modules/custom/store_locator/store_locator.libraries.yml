@@ -1,0 +1,13 @@
+store-map:
+  version: 1.x
+  js:
+    http://maps.google.com/maps/api/js?key=AIzaSyCEh_5ZMyT9d8-BWhyM1wIYb8DYE1ODckU&sensor=false: { type: external, minified: true }
+    js/infobox.js: {}
+    js/markerwithlabel.js: {}
+    js/newlocation.js: {}
+    js/jquery-ui.min.js: {}
+    js/common.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings

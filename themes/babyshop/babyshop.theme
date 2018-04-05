@@ -1,0 +1,535 @@
+<?php
+use Drupal\block\Entity\Block;
+use Drupal\views\ViewExecutable;
+/**
+ * @file
+ * Bootstrap sub-theme.
+ *
+ * Place your custom PHP code in this file.
+ */
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function babyshop_preprocess_html(&$variables) {
+	$variables['language'] = \Drupal::languageManager()->getCurrentLanguage()->getId();
+	$variables['country'] = strtolower($_SERVER['REDIRECT_country']);
+	$variables['site_host'] = $_SERVER['HTTP_HOST'];
+	if(isset($_SERVER['REDIRECT_country']) && ($_SERVER['REDIRECT_country'] == 'BH')) {
+		$variables['head_title'] = str_replace(array('Babyshop','babyshop'), array('Mothercare','mothercare'), $variables['head_title']);
+	}
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function babyshop_page_attachments_alter(array &$page) {
+
+	$current_path = \Drupal::service('path.current')->getPath();
+	$arg = explode('/', $current_path);
+
+	if(isset($arg[1])) {
+		switch ($arg[1]) {
+		    case 'contact':
+		        $meta_title = array(
+			      '#type' => 'html_tag',
+			      '#tag' => 'meta',
+			      '#attributes' => array(
+			        'name' => 'title',
+			        'content' => t('Get in touch with Babyshop on phone, email or social media'),
+			      ),
+			    );
+
+			    $meta_description = array(
+			      '#type' => 'html_tag',
+			      '#tag' => 'meta',
+			      '#attributes' => array(
+			        'name' => 'description',
+			        'content' => t('Get our contact numbers, email address or reach us on Facebook and Twitter. Find our store address or simply give us your feedback online.'),
+			      ),
+			    );
+			    $page['#attached']['html_head'][] = [$meta_title, 'title'];
+    			$page['#attached']['html_head'][] = [$meta_description, 'description'];
+
+		        break;
+		    case 'faq':
+		        $meta_title = array(
+			      '#type' => 'html_tag',
+			      '#tag' => 'meta',
+			      '#attributes' => array(
+			        'name' => 'title',
+			        'content' => t('Read our FAQs for help and information about Babyshop'),
+			      ),
+			    );
+
+			    $meta_description = array(
+			      '#type' => 'html_tag',
+			      '#tag' => 'meta',
+			      '#attributes' => array(
+			        'name' => 'description',
+			        'content' => t("Find out more about Babyshop's exchange and returns policies, gift vouchers, payment methods, store timings, out-of-stock products and much more."),
+			      ),
+			    );
+			    $page['#attached']['html_head'][] = [$meta_title, 'title'];
+    			$page['#attached']['html_head'][] = [$meta_description, 'description'];
+		        break;
+		    case 'media':
+		        $meta_title = array(
+			      '#type' => 'html_tag',
+			      '#tag' => 'meta',
+			      '#attributes' => array(
+			        'name' => 'title',
+			        'content' => t('Get the latest news and updates from Babyshop'),
+			      ),
+			    );
+
+			    $meta_description = array(
+			      '#type' => 'html_tag',
+			      '#tag' => 'meta',
+			      '#attributes' => array(
+			        'name' => 'description',
+			        'content' => t("Read our press releases to find out more about Babyshop's latest collections, new product launches, important events and future plans."),
+			      ),
+			    );
+			    $page['#attached']['html_head'][] = [$meta_title, 'title'];
+    			$page['#attached']['html_head'][] = [$meta_description, 'description'];
+		        break;
+		    case 'stores':
+		        $meta_title = array(
+			      '#type' => 'html_tag',
+			      '#tag' => 'meta',
+			      '#attributes' => array(
+			        'name' => 'title',
+			        'content' => t('Find your nearest Babyshop store easily'),
+			      ),
+			    );
+
+			    $meta_description = array(
+			      '#type' => 'html_tag',
+			      '#tag' => 'meta',
+			      '#attributes' => array(
+			        'name' => 'description',
+			        'content' => t("Our online store locator helps you search for Babyshop stores by your location, town or country easily."),
+			      ),
+			    );
+			    $page['#attached']['html_head'][] = [$meta_title, 'title'];
+    			$page['#attached']['html_head'][] = [$meta_description, 'description'];
+		        break;
+		    case 'offers':
+		        $meta_title = array(
+			      '#type' => 'html_tag',
+			      '#tag' => 'meta',
+			      '#attributes' => array(
+			        'name' => 'title',
+			        'content' => t('Discover the latest in-store offers from Babyshop'),
+			      ),
+			    );
+
+			    $meta_description = array(
+			      '#type' => 'html_tag',
+			      '#tag' => 'meta',
+			      '#attributes' => array(
+			        'name' => 'description',
+			        'content' => t("Get regular updates on discounts, sales, promotions and offers available in Babyshop stores around the region."),
+			      ),
+			    );
+			    $page['#attached']['html_head'][] = [$meta_title, 'title'];
+    			$page['#attached']['html_head'][] = [$meta_description, 'description'];
+		        break;
+		    default:
+		        break;
+		}
+	}
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function babyshop_preprocess_page(&$variables) {
+
+	$language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+	$current_path = \Drupal::service('path.current')->getPath();
+	$path_alias = \Drupal::service('path.alias_manager')->getAliasByPath($current_path);
+	
+	$arg = explode('/', $current_path);
+	$variables['site_host'] = $_SERVER['HTTP_HOST'];
+	$variables['current_year'] = date('Y');
+
+	$country = $_SERVER['REDIRECT_country'];
+
+	if($country == 'BH') {
+		$variables['site_logo'] = '/' . drupal_get_path('theme','babyshop') . '/logo-mothercare.png';
+		$variables['site_logo_footer'] = '/' . drupal_get_path('theme','babyshop') . '/logo-mothercare.png';
+		$variables['site_logo_mobile'] = '/' . drupal_get_path('theme','babyshop') . '/logo-mothercare-mobile.png';
+		if($language == 'ar') {
+			$variables['site_logo'] = '/' . drupal_get_path('theme','babyshop') . '/logo-mothercare-ar.png';
+			$variables['site_logo_footer'] = '/' . drupal_get_path('theme','babyshop') . '/logo-mothercare-ar.png';
+			$variables['site_logo_mobile'] = '/' . drupal_get_path('theme','babyshop') . '/logo-mothercare-ar.png';
+		}
+
+		$variables['secondary_menu'] = babyshop_load_menu('secondary-menu-mothercare');
+		$variables['footer_menu2'] = babyshop_load_menu('footer-one-mothercare');
+		$variables['footer_menu3'] = babyshop_load_menu('footer-2-mothercare');
+	}
+	else {
+		$variables['site_logo'] = '/' . drupal_get_path('theme','babyshop') . '/logo.svg';
+		$variables['site_logo_footer'] = '/' . drupal_get_path('theme','babyshop') . '/logo-02.jpg';
+		$variables['site_logo_mobile'] = '/' . drupal_get_path('theme','babyshop') . '/logo-mobile.jpg';
+		if($language == 'ar') {
+			$variables['site_logo'] = '/' . drupal_get_path('theme','babyshop') . '/logo-ar.png';
+			$variables['site_logo_footer'] = '/' . drupal_get_path('theme','babyshop') . '/logo-ar.png';
+			$variables['site_logo_mobile'] = '/' . drupal_get_path('theme','babyshop') . '/logo-ar.png';
+		}
+
+		$variables['secondary_menu'] = babyshop_load_menu('secondary-menu');
+		$variables['footer_menu2'] = babyshop_load_menu('footer-one');
+		$variables['footer_menu3'] = babyshop_load_menu('footer-2');
+	}
+	$variables['main_menu'] = babyshop_load_menu('main');
+
+	$lang_switcher_block = \Drupal\block\Entity\Block::load('languageswitcher');
+    $variables['lang_switcher']= \Drupal::entityTypeManager()->getViewBuilder('block')->view($lang_switcher_block);
+
+	if((isset($arg[1]) && $arg[1] == 'taxonomy') && (isset($arg[2]) && $arg[2] == 'term') && (isset($arg[3]) && is_numeric($arg[3]))) {
+		$term = taxonomy_term_load($arg[3]);
+		$variables['banner'] = isset($term->field_banner_image[0]->target_id) ? file_create_url(\Drupal::entityManager()->getTranslationFromContext($term)->field_banner_image->entity->getFileUri()) : '';
+	}
+
+	if((isset($arg[1]) && $arg[1] == 'search')) {
+		$variables['search_query'] = (isset($_GET['query']) && !empty($_GET['query'])) ? $_GET['query'] : '';
+
+		$search_filters = Block::load('exposedformsearchpage_1');
+ 		$variables['search_filters'] = \Drupal::entityTypeManager()->getViewBuilder('block')->view($search_filters);
+	}
+
+	if(isset($arg[1]) && $arg[1] == 'node' && isset($arg[2]) && is_numeric($arg[2]) && in_array($arg[2], array(7016,7017,7018))) {
+		$variables['#attached']['library'][] = 'babyshop/your-style';
+	}
+
+	if(isset($path_alias) && $path_alias == '/spring-collection-2017') {
+		$variables['#attached']['library'][] = 'babyshop/panorama-style';
+	}
+
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function babyshop_preprocess_node(&$vars) {
+	if($vars['node']->getType() == 'static_page') {
+		$vars['country'] = $_SERVER['REDIRECT_country'];
+	}
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function babyshop_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    $content_type = $node->bundle();
+    $suggestions[] = 'page__'.$content_type;
+  }
+}
+
+// For rendering menu's
+function babyshop_load_menu($menu_name) {
+	$menu_parameters = \Drupal::menuTree()->getCurrentRouteMenuTreeParameters($menu_name);
+	$tree = \Drupal::menuTree()->load($menu_name, $menu_parameters);
+	// Transform the tree using the manipulators you want.
+	$manipulators = array(
+	  // Only show links that are accessible for the current user.
+	  array('callable' => 'menu.default_tree_manipulators:checkAccess'),
+	  // Use the default sorting of menu links.
+	  array('callable' => 'menu.default_tree_manipulators:generateIndexAndSort'),
+	);
+	$tree = \Drupal::menuTree()->transform($tree, $manipulators);
+
+	$renderable = \Drupal::menuTree()->build($tree);
+	return \Drupal::service('renderer')->render($renderable);
+}
+
+function babyshop_preprocess_bef_radios(&$variables) {
+	$language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+	if($variables['element']['#name'] == 'tag') {
+
+	    $current_path = \Drupal::service('path.current')->getPath();
+		$tid = explode('/', $current_path);
+
+		if(isset($tid[3]) && is_numeric($tid[3])) {
+			$options = array('All');
+			$variables['depth'] = [];
+			$variables['parent'] = [];
+
+		  	$children = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('product_category',$tid[3]);
+
+		  	foreach($children as $child) {
+
+				$query = \Drupal::database()->select('taxonomy_term_field_data', 'ttfd');
+				$query->distinct();
+				$query->join('taxonomy_term__field_product_category', 'ttfpc', 'ttfpc.entity_id = ttfd.tid');
+				$query->fields('ttfd', ['tid', 'name']);
+				$query->condition('ttfd.vid', 'tags');
+				$query->condition('ttfpc.field_product_category_target_id', $child->tid);
+				$query->condition('ttfd.langcode', $language);
+				$query->orderBy('ttfd.weight', 'DESC');
+				$tags = $query->execute()->fetchAll();
+
+				if(count($tags) > 0) {
+					$term = \Drupal\taxonomy\Entity\Term::load($child->tid);
+					$translation = $term->getTranslation($language);
+
+					$variables['parent'][$child->tid] = isset($translation->name->value) ? $translation->name->value : $child->name;
+					$variables['depth'][$child->tid] = 10;
+					$options[] = $child->tid;
+
+					foreach($tags as $tag) {
+						$options[] = $tag->tid;
+						$variables['depth'][$tag->tid] = 0;
+					}
+				}
+
+		    }
+
+			$variables['children'] = $options;
+			$variables['element']['All']['#title'] = t('All Categories');
+		}
+	}
+
+	if($variables['element']['#name'] == 'brand') {
+		$current_path = \Drupal::service('path.current')->getPath();
+		$tid = explode('/', $current_path);
+
+		if(isset($tid[3]) && is_numeric($tid[3])) {
+
+			$query = \Drupal::database()->select('node_field_data', 'nfd');
+			$query->distinct();
+			$query->join('node__field_product_category', 'nfpc', 'nfpc.entity_id = nfd.nid');
+			$query->join('taxonomy_term_hierarchy', 'tth', 'tth.tid = nfpc.field_product_category_target_id');
+			$query->join('node__field_product_brand', 'nfpb', 'nfpb.entity_id = nfd.nid');
+			$query->join('taxonomy_term_field_data', 'ttfd', 'ttfd.tid = nfpb.field_product_brand_target_id');
+			$query->fields('ttfd', ['tid', 'name']);
+			$query->condition('nfd.type', 'product');
+			$query->condition('tth.parent', $tid[3]);
+			$query->condition('nfpc.deleted', 0);
+			$query->condition('nfpb.deleted', 0);
+			$query->condition('nfd.status', 1);
+			$query->condition('ttfd.langcode', $language);
+			$query->orderBy('ttfd.weight', 'DESC');
+			$brands = $query->execute()->fetchAll();
+
+			if(count($brands) > 0) {
+
+				$options = array('All');
+				$variables['depth'] = [];
+
+				foreach($brands as $brand) {
+					$options[] = $brand->tid;
+					$variables['depth'][$brand->tid] = 0;
+				}
+
+				$variables['children'] = $options;
+
+				$variables['element']['All']['#title'] = t('All Brands');
+				$variables['depth']['All'] = 1;
+			}
+			else {
+				unset($variables['children']);
+			}
+		}
+	}
+
+	if($variables['element']['#name'] == 'term') {
+		$variables['element']['All']['#title'] = t('All Blogs');
+	}
+
+	if($variables['element']['#name'] == 'type') {
+		$variables['element']['All']['#title'] = t('All Results');
+	}
+
+}
+
+function babyshop_preprocess_views_view_unformatted(&$variables) {
+
+	switch ($_SERVER['REDIRECT_country']) {
+		case 'BH':
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+973 17564005';
+			break;
+		
+		default:
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+97148149600';
+			break;
+			
+			case 'EG':
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '01026099900/01026099911';
+			break;
+		
+		default:
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+97148149600';
+			break;
+			
+			case 'KW':
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+965 22909909';
+			break;
+		
+		default:
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+97148149600';
+			break;
+			
+			case 'OM':
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+968 22086000';
+			break;
+		
+		default:
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+97148149600';
+			break;
+			
+			case 'QA':
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+974 44289111';
+			break;
+		
+		default:
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+97148149600';
+			break;
+			
+			case 'SA':
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+966 2 2579500';
+			break;
+		
+		default:
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+97148149600';
+			break;
+			
+			case 'LB':
+			$variables['name'] = t('Sachindra Kemval');
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+961-71801546';
+			break;
+		
+		default:
+			$variables['name'] = t('Sachindra Kemval');
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+961-71801546';
+			break;
+			
+			case 'KE':
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			
+			break;
+		
+		default:
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			
+			break;
+			
+			case 'YE':
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			
+			break;
+		
+		default:
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			
+			break;
+			
+			case 'PK':
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			
+			break;
+		
+		default:
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			
+			break;
+			
+			case 'TZ':
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			
+			break;
+		
+		default:
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			
+			break;
+						
+			case 'LY':
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			
+			break;
+		
+		default:
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			
+			break;
+			
+			case 'TH':
+			$variables['name'] = t('Nattawan ( Kate ) ');
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '(662)169-2630';
+			break;
+		
+		default:
+			$variables['name'] = t('Nattawan ( Kate ) ');
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '(662)169-2630';
+			break;
+			
+			case 'IQ':
+			$variables['name'] = t('Ram Kapoor');
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+964-7719945108';
+			break;
+		
+		default:
+			$variables['name'] = t('Ram Kapoor');
+			$variables['email'] = 'info@babyshopstores.com';
+			$variables['phone_number'] = '+964-7719945108';
+			break;
+			
+			case 'KZ':
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			
+			break;
+		
+		default:
+			
+			$variables['email'] = 'info@babyshopstores.com';
+			
+			break;
+	}
+}

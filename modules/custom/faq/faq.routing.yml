@@ -1,0 +1,8 @@
+faq.faq_controller:
+  path: '/faq'
+  defaults:
+    _controller: '\Drupal\faq\Controller\FaqPage::faq_listing'
+    _title: 'Faq Page'
+  requirements:
+    _permission: 'access content'
+

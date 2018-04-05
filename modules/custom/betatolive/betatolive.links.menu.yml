@@ -1,0 +1,29 @@
+betatolive.operation:
+  title: 'Publish to Live'
+  route_name: betatolive.operation
+  parent: system.admin
+  menu_name: admin 
+
+betatolive.push_component_form:
+  title: 'Publish to Live'
+  parent: betatolive.operation
+  route_name: betatolive.push_component_form
+  menu_name: admin 
+
+betatolive.configuration_form:
+  title: 'Skip Configuration'
+  parent: betatolive.operation
+  route_name: betatolive.configuration_form
+  menu_name: admin 
+
+betatolive.beta_backup_list:
+  title: 'Beta Backup Listing'
+  parent: betatolive.operation
+  route_name: betatolive.beta_backup_list
+  menu_name: admin 
+
+betatolive.live_backup_list:
+  title: 'Live Backup Listing'
+  parent: betatolive.operation
+  route_name: betatolive.live_backup_list
+  menu_name: admin 

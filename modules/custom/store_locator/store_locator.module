@@ -1,0 +1,15 @@
+<?php
+/**
+ * @file
+ * hook_theme()
+ */
+ function store_locator_theme() {
+  return [
+    'store_locator_block' => [
+      'variables' => ['store_form' => NULL],
+    ],
+    'store_locator_page' => [
+      'variables' => ['store_form' => NULL],
+    ],
+  ];
+}

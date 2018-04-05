@@ -1,0 +1,55 @@
+{#
+  /**
+  * @file
+  * Default theme implementation to display a view of unformatted rows.
+  *
+  * Available variables:
+  * - title: The title of this group of rows. May be empty.
+  * - rows: A list of the view's row items.
+  *   - attributes: The row's HTML attributes.
+  *   - content: The row's content.
+  * - view: The view object.
+  * - default_row_class: A flag indicating whether default classes should be
+  *   used on rows.
+  *
+  * @see template_preprocess_views_view_unformatted()
+  *
+  * @ingroup themeable
+  */
+  #}
+  <main id="main" class="media-center">
+    <header class="section-head media-head">
+      <div class="container">
+        <h1>{{ 'Media Centre' | t }}</h1>
+        <p>{{ 'News and updates from Babyshop' | t }}</p>
+      </div>
+    </header>
+    <div class="container">
+      <div class="media-content">
+        <div class="column-left">
+          <h2>{{ 'Press Releases'|t }}</h2>
+          <ul class="media-list">
+            {% for row in rows %}
+            <li>
+              {{ row.content }}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="column-right">
+          <h2>{{ 'Media Contact' | t }} </h2>
+          <address>
+            {% if name %}
+            {{ name }}<br>
+            {% endif %}
+            {% if email %}
+            <a href="mailto:{{ email }}">{{ email }}</a><br>
+            {% endif %}
+            {% if phone_number %}
+            <a href="tel:{{ phone_number }}">{{ phone_number }} {{ 'Contact'|t }}</a>
+            {% endif %}
+          </address>
+        </div>
+      </div>
+    </div>
+  </main>

@@ -1,0 +1,94 @@
+<?php
+/* Sets the maximum time limt for script execution */
+set_time_limit(0);
+global $_instance, $skip_tables, $publish_on, $publish_server_name;
+
+/* Default table list to skip */
+$skip_tables = array (
+	'cachetags' => 'cachetags',
+	'cache_bootstrap' => 'cache_bootstrap',
+	'cache_config' => 'cache_config',
+	'cache_container' => 'cache_container',
+	'cache_data' => 'cache_data',
+	'cache_default' => 'cache_default',
+	'cache_discovery' => 'cache_discovery',
+	'cache_dynamic_page_cache' => 'cache_dynamic_page_cache',
+	'cache_entity' => 'cache_entity',
+	'cache_menu' => 'cache_menu',
+	'cache_migrate' => 'cache_migrate',
+	'cache_render' => 'cache_render',
+	'cache_toolbar' => 'cache_toolbar',
+	'newsletter_contact' => 'newsletter_contact',
+	'flood' => 'flood',
+	'media_enquiry' => 'media_enquiry',
+	'partner_enquiry' => 'partner_enquiry',
+	'feedback' => 'feedback',
+	'sessions' => 'sessions',
+	'ip2c' => 'ip2c',
+	'role' => 'role',
+	'role_permission' => 'role_permission',
+	'users' => 'users',
+	'users_roles' => 'users_roles',
+	'users_data' => 'users_data',
+	'users_field_data' => 'users_field_data',
+	'user__user_picture' => 'user__user_picture',
+	'watchdog' => 'watchdog',
+	'node_comment_statistics' => 'node_comment_statistics',
+	'comment' => 'comment',
+	'field_data_comment_body' => 'field_data_comment_body',
+	'field_revision_comment_body' => 'field_revision_comment_body'
+);
+
+/**
+ * Define the enviornment variables for Beta to live Operation
+ */
+if($_SERVER['SERVER_NAME']=='uat.www2.babyshopstores.com')
+{
+	$_instance = 'beta';
+	$publish_on= 'http://www2.babyshopstores.com';
+	$publish_server_name= 'www2.babyshopstores.com';
+}
+else if($_SERVER['SERVER_NAME']=='dev.babyshopstores.com')
+{
+	$_instance = 'dev';
+	$publish_on= 'http://uat.www2.babyshopstores.com';
+	$publish_server_name= 'uat.www2.babyshopstores.com';
+}
+else if($_SERVER['SERVER_NAME']=='www2.babyshopstores.com')
+{
+	$_instance = 'www';
+	$publish_on= '';
+	$publish_server_name= '';
+}
+$_instance = 'beta';
+
+ /**
+ * @file
+ * hook_theme()
+ */
+ function betatolive_theme() {
+  return [
+    'betatolive_message' => [
+    	'template' => 'betatolive-tooltips',
+      	'variables' => ['instance' => NULL],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function betatolive_page_attachments_alter(array &$page) {
+
+	if(isset($_SESSION['process_url'])) {
+		$element = array(
+		    '#tag' => 'meta', 
+		    '#attributes' => array(
+			    'http-equiv' => 'refresh', 
+			    'content' => '10; url='.$_SESSION['process_url'],
+		    ),
+	    );
+	  	$page['#attached']['html_head'][] = [$element, 'refresh'];
+	}
+    
+}

@@ -1,0 +1,90 @@
+.text-center {
+	overflow: hidden;
+	margin: 0 0 30px;
+}
+
+.text-center ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	overflow: hidden;
+	text-align: center;
+	font-size: 15px;
+	line-height: 30px;
+	font-weight: 300;
+}
+
+.text-center ul li {
+	display: inline-block;
+	vertical-align: top;
+	margin: 0 3px;
+}
+
+.text-center ul li.prev a {
+	width: auto;
+	padding: 0 11px;
+}
+
+.text-center ul li.prev a:before {
+	font-family: "icomoon";
+	content: "\f104";
+	display: inline-block;
+	margin: 0 8px 0 0;
+	font-size: 14px;
+	line-height: 14px;
+	position: relative;
+	top: 1px;
+}
+
+.text-center ul li.next a {
+	width: auto;
+	padding: 0 11px;
+}
+
+.text-center ul li.next a:after {
+	display: inline-block;
+	margin: 0 0 0 8px;
+	content: "";
+	font-family: "icomoon";
+	content: "\f105";
+	font-size: 14px;
+	line-height: 14px;
+	position: relative;
+	top: 1px;
+}
+
+.text-center ul li.current a {
+	background: #0eacde;
+	color: #fdfdfd;
+	opacity: 1;
+	pointer-events: none;
+}
+
+.text-center ul a {
+	width: 30px;
+	height: 30px;
+	display: block;
+	background: #f1f1f1;
+	color: #000;
+	padding: 0 6px;
+}
+
+.text-center ul a:hover {
+	background: #0eacde;
+	color: #fdfdfd;
+	opacity: 1;
+}
+.media-content .text-center ul {
+	text-align: left;
+}
+
+.media-content .text-center ul li {
+	text-align: center;
+	margin: 0 6px 0 0;
+}
+
+@media (max-width: 767px) {
+	.text-center ul li.hidden-xs {
+		display: none;
+	}
+}

@@ -1,0 +1,13 @@
+<?php
+/**
+ * @file
+ * hook_theme()
+ */
+ function faq_theme() {
+  return [
+    'faq_page' => [
+      'variables' => ['faq_categories' => NULL, 'faq_content' => NULL, 'country' => NULL],
+    ],
+  ];
+ }
+

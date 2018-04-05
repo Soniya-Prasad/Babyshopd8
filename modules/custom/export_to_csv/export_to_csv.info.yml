@@ -1,0 +1,5 @@
+name: Custom_CSV_Export
+type: module
+description: Custom module for Export product node to csv
+package: Custom
+core: 8.x

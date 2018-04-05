@@ -1,0 +1,7 @@
+export_to_csv.page:
+  path: '/admin/export_product'
+  defaults:
+    _form: '\Drupal\export_to_csv\Form\ExportForm'
+    _title: 'Export page'
+  requirements:
+    _permission: 'access administration pages'

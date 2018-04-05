@@ -1,0 +1,7 @@
+import_csv.import_form:
+  path: '/admin/import_product'
+  defaults:
+    _title: 'Import Form'
+    _form: '\Drupal\import_csv\Form\ImportForm'
+  requirements:
+    _permission: 'access administration pages'

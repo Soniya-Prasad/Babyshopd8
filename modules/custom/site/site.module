@@ -1,0 +1,129 @@
+<?php
+// Set global variables for blogs
+
+global $default_country;
+
+$HTTP_HOST = filter_input(INPUT_SERVER, 'HTTP_HOST');
+$REDIRECT_country = filter_input(INPUT_SERVER, 'REDIRECT_country');
+$drupal_q = filter_input(INPUT_GET, 'q');
+
+if (filter_input(INPUT_GET, 'adm') == 1) {
+	//Force this country to visit and set cookie
+	setcookie('terrirory', $REDIRECT_country,time() + (86400 * 365),'/');
+}
+
+$terr = filter_input(INPUT_COOKIE, 'terrirory');
+
+if ($terr) {
+	if ($terr != $REDIRECT_country) {
+		$location = 'http://uat.www2.babyshopstores.com/' . strtolower($terr) . '/en/' . $drupal_q;
+		if(isset($_SERVER['REDIRECT_URL']) && strpos($_SERVER['REDIRECT_URL'],'its-your-style')) {
+	    	$location = 'http://uat.www2.babyshopstores.com/' . strtolower($terr) . '/en/its-your-style';
+	  	}
+		header("Location: $location");
+		ob_end_flush();
+		exit;
+	}
+}
+
+if (!isset($_GET['adm'])) {
+	if (!isset($terr)) {
+
+		if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] != '') {
+		  $ip_address = filter_input(INPUT_SERVER, 'HTTP_X_FORWARDED_FOR');
+		}
+		else {
+		  $ip_address = filter_input(INPUT_SERVER, 'REMOTE_ADDR');
+		}
+
+		$userCountry = get_user_country($ip_address);
+
+		if (isset($userCountry)) {
+			$default_country = $userCountry;
+
+			// if (!in_array(strtoupper($userCountry), array('AE', 'QA', 'KE', 'TZ', 'KZ', 'BH', 'KW', 'SA', 'YE', 'LY', 'EG', 'OM', 'LB', 'PK', 'IQ', 'TH'))) {
+			//     $userCountry = 'AE';
+			//     $_SERVER['REDIRECT_country'] = 'ae';
+			//     $default_country = $userCountry;
+			// }
+
+			if (strtoupper($userCountry) == 'AE' || $REDIRECT_country == 'AE') {
+			  if(isset($_SERVER['REDIRECT_URL']) && strpos($_SERVER['REDIRECT_URL'],'its-your-style')) {
+			    $url = "http://www.babyshopstores.com/ae/en/its-your-style";
+			  }
+			  else {
+			    $url = "http://www.babyshopstores.com/ae/en";
+			  }
+			  
+			  header("Location: $url");
+			  ob_end_flush();
+			  exit();
+			}
+
+			if($REDIRECT_country == 'BH' && strpos($HTTP_HOST, 'babyshopstores')) {
+				$location = 'http://uat.www2.mothercarestores.com/bh/en/' . $drupal_q;
+				if(isset($_SERVER['REDIRECT_URL']) && strpos($_SERVER['REDIRECT_URL'],'its-your-style')) {
+			    	$location = 'http://uat.www2.mothercarestores.com/bh/en/its-your-style';
+			  	}
+				header("Location: $location");
+				ob_end_flush();
+				exit;
+			}
+			elseif ($REDIRECT_country != 'BH' && strpos($HTTP_HOST, 'mothercarestores')) {
+				$location = 'http://uat.www2.babyshopstores.com/' . strtolower($REDIRECT_country) . '/en/' . $drupal_q;
+				if(isset($_SERVER['REDIRECT_URL']) && strpos($_SERVER['REDIRECT_URL'],'its-your-style')) {
+			    	$location = 'http://uat.www2.babyshopstores.com/' . strtolower($REDIRECT_country) . '/en/its-your-style';
+			  	}
+				header("Location: $location");
+				ob_end_flush();
+				exit;
+			}
+			// elseif ($REDIRECT_country != $userCountry && strpos($HTTP_HOST, 'babyshopstores')) {
+			// 	$location = 'http://uat.www2.mothercarestores.com/bh/en/' . $drupal_q;
+			// 	if(isset($_SERVER['REDIRECT_URL']) && strpos($_SERVER['REDIRECT_URL'],'its-your-style')) {
+			//     	$location = 'http://uat.www2.mothercarestores.com/bh/en/its-your-style';
+			//   	}
+			// 	header("Location: $location");
+			// 	ob_end_flush();
+			// 	exit;
+			// }
+			// elseif ($REDIRECT_country != $userCountry && strpos($HTTP_HOST, 'mothercarestores')) {
+
+			// 	$location = 'http://uat.www2.babyshopstores.com/' . strtolower($userCountry) . '/en/' . $drupal_q;
+			// 	if(isset($_SERVER['REDIRECT_URL']) && strpos($_SERVER['REDIRECT_URL'],'its-your-style')) {
+			//     	$location = 'http://uat.www2.babyshopstores.com/' . strtolower($userCountry) . '/en/its-your-style';
+			//   	}
+			// 	header("Location: $location");
+			// 	ob_end_flush();
+			// 	exit;
+			// }
+			
+		}
+	}
+}
+
+
+function get_user_country($ip) {
+  	$ip_num=sprintf("%u",ip2long($ip));
+
+	$query = \Drupal::database()->query('SELECT country_code FROM ip2c WHERE :ipnum BETWEEN begin_ip_num AND end_ip_num', array(':ipnum' => $ip_num))->fetchField();
+	return $query;
+}
+
+/**
+ * @file
+ * hook_theme()
+ */
+ function site_theme() {
+  return [
+    'email_subscription_block' => [
+      'variables' => ['subscribe_form' => NULL],
+    ],
+  ];
+}
+
+function site_node_view(&$build, $node, $display, $view_mode) {
+  if ($node->getType() == 'static_page' && $view_mode == 'full') {
+    $build['#cache']['max-age'] = 0;
+  }
+}

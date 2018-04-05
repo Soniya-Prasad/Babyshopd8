@@ -1,0 +1,8 @@
+name: Contact Block
+description: Module to show contact details.
+core: 8.x
+package: Custom
+dependencies:
+- node
+- block
+type: module

@@ -1,0 +1,90 @@
+<?php
+
+/**
+ * hook_schema()
+ * Table to store available backup details
+ */
+function betatolive_schema() {
+  $schema['betatolive_backups'] = array(
+    'fields'=>array(
+      'backup_time'=>array(
+        'type'=>'varchar',
+        'length'=>50,
+        'not null'=>true,
+      ),
+      'pushedby'=>array(
+        'type'=>'varchar',
+        'length'=>50,
+        'not null'=>true,
+      ),
+      'authorcomments'=>array(
+        'type'=>'varchar',
+        'length'=>255,
+        'not null'=>true,
+      ),
+      'source_code'=>array(
+        'type'=>'text',
+        'not null'=>false,
+      ),
+      'database_path'=>array(
+        'type'=>'text',
+        'not null'=>false,
+      ),
+      'media_files'=>array(
+        'type'=>'text',
+        'not null'=>false,
+      ),
+      'instance'=>array(
+        'type'=>'varchar',
+        'length'=>200,
+        'not null'=>false,
+      ),
+    ),
+  );
+
+  $schema['betatolive_status'] = array(
+    'fields'=>array(
+      'username'=>array(
+        'type'=>'varchar',
+        'length'=>50,
+        'not null'=>true,
+      ),
+      'pushed_data'=>array(
+        'type'=>'blob',
+        'length'=>65535,
+        'not null'=>true,
+      ),
+      'ip' => array(
+        'type'=>'varchar',
+        'length'=>50,
+        'not null'=>true,
+      ),
+      'time' => array(
+        'type'=>'varchar',
+        'length'=>50,
+        'not null'=>true,
+      ),
+      'userid' => array(
+        'type'=>'varchar',
+        'length'=>50,
+        'not null'=>true,
+      ),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * hook_install()
+ * Installing betatolive module
+ */
+function betatolive_install() {
+
+  \Drupal::configFactory()->getEditable('betatolive.settings')->set('betatolive_instance','beta')->save();
+  //variable_set('betatolive_instance','beta');
+  $backup_dir =DRUPAL_ROOT .'/backup';
+  if(!file_prepare_directory($backup_dir))
+    \Drupal::service('file_system')->mkdir($backup_dir);
+
+}

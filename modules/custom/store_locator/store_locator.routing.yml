@@ -1,0 +1,14 @@
+store_locator.store_locator_controller:
+  path: '/stores'
+  defaults:
+    _controller: '\Drupal\store_locator\Controller\StoreLocatorPage::store_locator'
+    _title: 'Store Locator'
+  requirements:
+    _permission: 'access content'
+
+store_locator.get_cities:
+  path: '/store_callback/{location}'
+  defaults:
+    _controller: '\Drupal\store_locator\Controller\StoreLocatorPage::store_callback'
+  requirements:
+    _permission: 'access content'

@@ -1,0 +1,71 @@
+betatolive.operation:
+  path: '/admin/operation'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Publish to Live'
+  requirements:
+    _permission: 'beta to live'
+
+betatolive.push_component_form:
+  path: '/admin/operation/backup'
+  defaults:
+    _form: '\Drupal\betatolive\Form\PushComponentForm'
+    _title: 'Publish to Live'
+  requirements:
+    _permission: 'beta to live'
+
+betatolive.configuration_form:
+  path: '/admin/operation/config/betatolive/skip'
+  defaults:
+    _form: '\Drupal\betatolive\Form\ConfigurationForm'
+    _title: 'Skip Configuration'
+  requirements:
+    _permission: 'beta to live'
+
+betatolive.instance_configuration_form:
+  path: '/admin/operation/config/betatolive/instance'
+  defaults:
+    _form: '\Drupal\betatolive\Form\InstanceConfigurationForm'
+    _title: 'Instance Settings'
+  requirements:
+    _permission: 'beta to live'
+
+betatolive.beta_backup_list:
+  path: '/admin/operation/list/backup/beta'
+  defaults:
+    _controller: '\Drupal\betatolive\Controller\BackupListPage::betatolive_list_backups'
+    _title: 'Beta Backup Listing'
+  requirements:
+    _permission: 'beta to live'
+
+betatolive.live_backup_list:
+  path: '/admin/operation/list/backup/live'
+  defaults:
+    _controller: '\Drupal\betatolive\Controller\BackupListPage::betatolive_list_backups'
+    _title: 'Live Backup Listing'
+  requirements:
+    _permission: 'beta to live'
+
+betatolive.delete_backup:
+  path: '/admin/backup/delete/{instance}/{backup}/confirm'
+  defaults:
+    _form: '\Drupal\betatolive\Form\DeleteBackupForm'
+    _title: 'Delete Backup'
+  requirements:
+    _permission: 'beta to live'
+
+betatolive.restore_backup:
+  path: '/admin/backup/restore/{instance}/{backup}/confirm'
+  defaults:
+    _form: '\Drupal\betatolive\Form\RestoreBackupForm'
+    _title: 'Retore Backup'
+  requirements:
+    _permission: 'beta to live'
+
+betatolive.processing_backup:
+  path: '/admin/backup/{backup}/processing'
+  defaults:
+    _controller: '\Drupal\betatolive\Controller\BackupListPage::betatolive_processing_backup_operation'
+    _title: 'Processing Backup operation'
+  requirements:
+    _permission: 'beta to live'

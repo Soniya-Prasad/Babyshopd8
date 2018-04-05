@@ -1,0 +1,193 @@
+<?php
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\FormBase;
+
+
+/**
+ * Implements hook_theme().
+ */
+function contact_block_theme($existing, $type, $theme, $path) {
+  return [
+    'contact_message_contact_us_form' => [
+      'render element' => 'form',
+    ],
+   ];
+}
+
+
+function contact_block_form_contact_message_contact_us_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+
+	$form['field_feed']['widget']['#options']['_none'] = t('Choose your feedback category');
+	// Name
+	$form['field_name']['widget'][0]['value']['#placeholder'] = t('Full Name');
+	$form['field_name']['widget'][0]['value']['#prefix'] = '<div class="personal_details"> <p class="control-label js-form-required form-required">' . t('How can we reach you?') . '</p></div>';
+	unset($form['field_name']['widget'][0]['value']['#title']);
+
+	//Mail
+	$form['field_email']['widget'][0]['value']['#placeholder'] = t('Your Email Address');
+	unset($form['field_email']['widget'][0]['value']['#title']);
+
+	//Phone
+	$form['field__phone_number']['widget'][0]['value']['#placeholder'] = t('Your Phone Number');
+	unset($form['field__phone_number']['widget'][0]['value']['#title']);
+	$form['subject']['widget'][0]['value']['#default_value'] = t('Thank you for your feedback');
+
+	$form['actions']['submit']['#suffix'] = '<div class="loader">' . t('Please wait ...') . '</div>';
+
+	$form['#validate'][] = 'contact_block_form_validate';
+
+	foreach (array_keys($form['actions']) as $action) {
+		if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit' ) {
+			$form['actions'][$action]['#submit'][] = 'contact_block_form_submit';
+		}
+	}
+}
+
+function contact_block_form_validate(&$form, FormStateInterface $form_state){
+	$field_phone = $form_state->getValue('field__phone_number');
+	$phone = $field_phone[0]['value'];
+
+	if ($phone && !is_numeric($phone)) {
+		$form_state->setErrorByName('field__phone_number[0][value]', t('Phone number should be number'));
+	}
+}
+
+/*custom submit function to store feedback details in custom table*/
+function contact_block_form_submit(&$form, FormStateInterface $form_state){
+	
+	$field_feed = $form_state->getValue('field_feed');
+	$field_tellus = $form_state->getValue('field_field_tell_us_your_feedbac');
+	$field_phone = $form_state->getValue('field__phone_number');
+	$field_name = $form_state->getValue('field_name');
+	$field_email = $form_state->getValue('field_email');
+
+	$onmind = $field_feed[0]['value']; 
+	$feedback = $field_tellus[0]['value']; 
+	$phone = $field_phone[0]['value'];
+	$name = $field_name[0]['value'];
+	$email_address = $field_email[0]['value']; 
+
+	$insert = \Drupal::database()->insert('feedback')
+					->fields(
+					  array(
+					    'onmind' => $onmind,
+	    				'feedback' => $feedback,
+					    'email_address' => $email_address,
+					    'phone' => $phone,
+					    'name' => $name,
+					   	'addtime' => time(),
+					    'ip' => $_SERVER['REMOTE_ADDR'],
+					  )
+					)->execute();
+}
+
+
+/**
+ * implements hook_mail_alter()
+ * Custom format the contact us form, otherwise it's full of nbsp terribleness
+ */
+function contact_block_mail_alter(&$message) {
+
+	$country_url = $_SERVER['REDIRECT_country'];
+	// only alter contact forms
+	if (!empty($message['id']) && $message['id'] == 'contact_page_mail') {
+	// further restrict mail_alter to machine name of a particular contact form, in this example "contact_us"
+		if ($message['params']['contact_form']->id() == 'contact_us') {
+		// make it a bit neater to access fields
+			$contact_message = $message['params']['contact_message'];
+			// reset body
+			$message['body'] = [];
+
+			$admin_body = "Dear Admin,
+
+			Greetings!
+
+			New contact message received,Please find the following details below.
+			CUSTOMER DETAIL
+			What's on your mind : ".$contact_message->get('field_feed')->value."
+			Feedback Detail: ".$contact_message->get('field_field_tell_us_your_feedbac')->value."
+			How to reach the customer :
+			Email - ".$contact_message->get('field_email')->value."
+			Phone number - ".$contact_message->get('field__phone_number')->value."
+			Full Name : ".$contact_message->get('field_name')->value."
+
+			Thanks and Regard,
+			Babyshop Team";
+
+			// add plain text body string into the $message['body'] array
+			$message['body'][] = $admin_body;
+			$message['subject'] = 'New feedback message received.';
+			$details = emaildetails();
+			$message['to'] = $details[$country_url]['to'];
+			$header = array('Cc' => $details[$country_url]['cc']);
+			$message_header = $message['headers'];
+			$message['headers'] = array_merge($message_header, $header);
+		}
+	}
+}
+
+function emaildetails(){
+
+	return array(
+		'SA'=>array(
+			'to'=>'ashraf.saudagar@landmarkgroup.com',
+			'cc'=>'info@babyshopstores.com',
+			),
+		'BH'=>array(
+			'to'=>'fabian.cutaran@arg.com.bh',
+			'cc'=>'info@babyshopstores.com',
+			),
+		'EG'=>array(
+			'to'=>'hani.mohamed@landmarkgroup.com',
+			'cc'=>'info@babyshopstores.com',
+			),
+		'KW'=>array(
+			'to'=>'joby.puthiyedath@landmarkgroup.com',
+			'cc'=>'info@babyshopstores.com',
+			),
+		'OM'=>array(
+			'to'=>'naveen.robert@landmarkgroup.com',
+			'cc'=>'info@babyshopstores.com',
+			),
+		'QA'=>array(
+			'to'=>'joman.antappan@landmarkgroup.com',
+			'cc'=>'info@babyshopstores.com',
+			),
+		'LB'=>array(
+			'to'=>'amitesh.rajan@landmarkgroup.com',
+			'cc'=>'info@babyshopstores.com',
+			),
+		'KE'=>array(
+			'to'=>'sarah.ouso@deacons.co.ke',
+			'cc'=>'info@babyshopstores.com',
+			),
+		'YE'=>array(
+			'to'=>'fares@diamond-ye.com',
+			'cc'=>'info@babyshopstores.com',
+			),
+		'PK'=>array(
+			'to'=>'bsp@akmpk.com',
+			'cc'=>'info@babyshopstores.com',
+			),
+		'TZ'=>array(
+			'to'=>'amina@earetail.com',
+			'cc'=>'info@babyshopstores.com',
+			),
+		'LY'=>array(
+			'to'=>'adel.alasaly@senwanco.com',
+			'cc'=>'info@babyshopstores.com',
+			),
+		'TH'=>array(
+			'to'=>'chnattawan@robinson.co.th',
+			'cc'=>'info@babyshopstores.com',
+			),
+		'KZ'=>array(
+			'to'=>'info@babyshopstores.com',
+			'cc'=>'info@babyshopstores.com',
+			),
+        'IQ'=>array(
+			'to'=>'ram.kapoor@landmarkgroup.com',
+			'cc'=>'info@babyshopstores.com',
+			),			
+	);
+}

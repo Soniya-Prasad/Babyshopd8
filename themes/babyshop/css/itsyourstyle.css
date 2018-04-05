@@ -1,0 +1,187 @@
+@font-face {
+  font-family: 'Font Icon';
+  src: url(../fonts/font-icons.woff);
+}
+#wrapper #main {
+  padding: 0;
+}
+#wrapper #main header {
+  display: none;
+}
+.row {
+  margin-left: -6px;
+  margin-right: -6px;
+}
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+#itsyourstylepage {
+  font: 300 13px/1.24 "Lato";
+}
+#itsyourstylepage .container-fluid {
+  margin: 0 auto;
+  max-width: 1256px;
+  padding: 0 10px;
+}
+.top-buffer {
+  margin-top: 22px
+}
+#row1 {
+  position: relative
+}
+#row1 #row1-text {
+  position: absolute;
+  top: 33.33%
+}
+#row1-text #row1-heading {
+  font-size: 54px;
+  font-weight: 500;
+  color: #FFF;
+}
+#row1-text #row1-subheading {
+  font-size: 29px;
+  font-weight: 300;
+  color: #FFF;
+}
+.row-heading {
+  font-size: 45px;
+  font-weight: 500;
+  color: #4E565C;
+}
+.row-subheading {
+  font-size: 25px;
+  font-weight: 300;
+  color: #4E565C;
+  padding-top: 15px;
+}
+.text-row-top {
+  margin-top: 4%;
+}
+.text-row-bottom {
+  margin-bottom: 4%;
+}
+.text-row-top-bottom {
+  padding-top: 3%;
+  padding-bottom: 3%
+}
+#row4 .carousel-caption {
+  color: #4E565C;
+  background-color: #F7F7F7;
+  opacity: .9;
+  font-size: 25px;
+  font-weight: 300;
+  left: 10px;
+  right: 15px;
+  bottom: 10px;
+  text-shadow: none
+}
+#itsyourstylepage .products-carousel {
+  padding: 0
+}
+.js-carousel-next, .js-carousel-prev {
+  position: absolute;
+  top: 15%;
+  bottom: 15%;
+  z-index: 1;
+  width: 45px;
+  cursor: pointer;
+  font-size: 1.85rem;
+  color: #FFF;
+  text-align: center
+}
+.js-carousel-prev {
+  left: 0
+}
+.js-carousel-next {
+  right: 0
+}
+.js-carousel-next:before, .js-carousel-prev:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  height: 100px;
+  font-size: 7.69rem
+}
+.slick-slider [class*=" icon-"], .slick-slider [class^=icon-] {
+  font-family: "Font Icon" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1
+}
+.icon-arrow-left:before, .js-carousel-prev:before {
+  content: "\e605"
+}
+.icon-arrow-right:before, .js-carousel-next:before {
+  content: "\e606"
+}
+.page-node-type-page .field--name-body picture img {
+  width: auto;
+}
+
+@media only screen and (min-width: 768px) {
+  .js-carousel-next, .js-carousel-prev {
+    border-left: 1px solid transparent;
+    box-sizing: content-box;
+    transition: width .5s linear;
+    top: 0;
+    bottom: 0;
+    /*background: rgba(0, 0, 0, .85);*/
+    background: rgba(161, 161, 161, 0.85);
+    min-width: 5%
+  }
+}
+/* Portrait */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+  #itsyourstylepage {
+    margin-top: -2px;
+  }
+  .top-buffer {
+    margin-top: 12px
+  }
+}
+/* Landscape */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+  #itsyourstylepage {
+    margin-top: -3px;
+  }
+  .top-buffer {
+    margin-top: 15px
+  }
+}
+@media only screen and (max-width: 767px) {
+  .top-buffer {
+    margin-top: 12px
+  }
+  #row1-text #row1-heading {
+    font-size: 25px
+  }
+  #row1-text #row1-subheading {
+    font-size: 15px
+  }
+  .row-heading {
+    font-size: 25px
+  }
+  .row-subheading {
+    font-size: 15px;
+    padding-top: 1%;
+  }
+  #row3 .block {
+    padding: 0;
+  }
+  .slick-slide img {
+    max-height: 120vw;
+  }
+  .js-carousel-next, .js-carousel-prev {
+    color: #FFF
+  }
+  .js-carousel-next:before, .js-carousel-prev:before {
+    font-size: 4rem
+  }
+}

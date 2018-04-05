@@ -1,0 +1,5 @@
+services:
+  site.site_subscriber:
+    class: Drupal\site\Controller\SiteSubscriber
+    tags:
+      - { name: 'event_subscriber' }

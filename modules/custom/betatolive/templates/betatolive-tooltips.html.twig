@@ -1,0 +1,20 @@
+<div id ="betatolive-tooltip">
+<span>Quick Help</span>
+<ol>
+	{% if instance == 'dev' %}
+		<li>Beta website will be backed up before pushing thease changes</li>
+	{% else %}
+		<li>Live website will be backed up before pushing thease changes</li>
+	{% endif %}
+	<li>Just in case of problems you will always have the option of recovering the working website from the backup</li>
+	<li>Source code : Only include code and database structure </li>
+	{% if instance == 'beta' %}
+		<li>Content : Content includes 'Media files', 'Images', 'Content' and database</li>
+		<li>Please select both where publishing the website to live</li>
+	{% endif %}
+	<li>Please select atlease 'Source Code' when publishing the website to 'beta'</li>
+	<li>Please make sure you have published the changes on Central instance
+	{% if instance == 'beta' %} before here. {% else %} . {% endif %}
+	</li>
+</ol>
+</div>

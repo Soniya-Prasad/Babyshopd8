@@ -1,0 +1,58 @@
+<header class="section-head faq-head">
+	<div class="container">
+		<h1>{{ 'FAQs'|t }}</h1>
+		{% if country == 'BH'  %}
+		<p>{{ 'Help, support and information on Mothercare? You’ll find it here.'|t }}</p>
+		{% else %}
+		<p>{{ 'Help, support and information on Babyshop? You’ll find it here.'|t }}</p>
+		{% endif %}
+	</div>
+</header>
+<div class="container">
+	<section class="info-content">
+		<div class="select-nav aside-links" id="select-nav">
+			<a href="#" class="sub-opener">&nbsp;</a>
+			<ul>
+				{% for key, term in faq_categories %}
+				<li class=""><a href="#tab{{ key }}">{{ term }}</a></li>
+				{% endfor %}
+
+			</ul>
+		</div>
+
+		<div class="select-nav select-nav_mobile aside-links">
+			<a href="#" class="sub-opener">&nbsp;</a>
+			<ul>
+				{% for key, term in faq_categories %}
+				{% if key == 1  %}
+				<li class="active"><a href="#tab{{ key }}">{{ term }}</a></li>
+				{% else %}
+				<li class=""><a href="#tab{{ key }}">{{ term }}</a></li>
+				{% endif %}
+				{% endfor %}
+
+			</ul>
+		</div>
+		<div class="content">
+			{% for tid, child in faq_content %}
+			<div id="tab{{ tid }}">
+				<ul class="faq-accordion">
+					{% for key, node in child %}
+						{% if key == 0  %}
+						<li class="active">
+						{% else %}
+						<li class="">
+						{% endif %}
+						<a class="faq-opener" href="#">{{ node.title }}</a>
+						<div class="faq-slide">
+							<p>{{ node.body_value|raw }}</p>
+						</div>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+				{% endfor %}
+
+			</div>
+		</section>
+	</div>
